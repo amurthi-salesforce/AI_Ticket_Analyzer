@@ -1,0 +1,23 @@
+{
+  "packageDirectories": [
+    {
+      "versionName": "Initial Release",
+      "versionNumber": "1.0.0.NEXT",
+      "path": "force-app",
+      "default": true,
+      "package": "AI Ticket Analyzer",
+      "versionDescription": "Mobile-optimized AI handwriting recognition for field service tickets. Extract structured data from handwritten delivery and service receipts using Agentforce.",
+      "definitionFile": "config/project-scratch-def.json",
+      "packageMetadataAccess": {
+        "permissionSets": [
+          "EinsteinGPTPromptTemplateManager"
+        ]
+      }
+    }
+  ],
+  "name": "AI Ticket Analyzer",
+  "namespace": "",
+  "sfdcLoginUrl": "https://login.salesforce.com",
+  "sourceApiVersion": "61.0",
+  "packageAliases": {}
+}
