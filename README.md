@@ -167,7 +167,7 @@ sf package install --package 04tKj000000fTEoIAM --target-org YourOrgAlias --wait
 3. Navigate to **Setup** → **Prompt Builder**
 4. Locate the prompt template named **"Read Handwriting - Delivery Tickets"**
 5. **If status shows "Draft":** Click on the template → Click **Activate** button
-6. **Verify:** Status should now show **"Published"** (active and ready to use)
+6. **Verify:** Status should now show **"Active"** (active and ready to use)
 
 **Note:** The package deploys the template in Published status, but you must verify it's active in your org.
 
@@ -296,7 +296,7 @@ The AI automatically extracts:
 **Solution:**
 1. Navigate to Setup → Prompt Builder
 2. Verify **"Read Handwriting - Delivery Tickets"** template exists
-3. Check Status is **"Published"** (if showing "Draft", click template and click **Activate**)
+3. Check Status is **"Active"** (if showing "Draft", click template and click **Activate**)
 4. If template is missing entirely, redeploy the package
 
 ### Quick Action Not Appearing
