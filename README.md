@@ -24,12 +24,12 @@ This package solves the common field service challenge of manually transcribing 
 
 **Production Orgs:**
 ```
-https://login.salesforce.com/packaging/installPackage.apexp?p0=04tKj000000fTEoIAM
+https://login.salesforce.com/packaging/installPackage.apexp?p0=04tKj000000fTEtIAM
 ```
 
 **Sandbox Orgs:**
 ```
-https://test.salesforce.com/packaging/installPackage.apexp?p0=04tKj000000fTEoIAM
+https://test.salesforce.com/packaging/installPackage.apexp?p0=04tKj000000fTEtIAM
 ```
 
 ### CLI Installation
@@ -41,7 +41,7 @@ sf org login web --alias YourOrgAlias
 
 Then install the package (replace `YourOrgAlias` with your actual org alias):
 ```bash
-sf package install --package 04tKj000000fTEoIAM --target-org YourOrgAlias --wait 20
+sf package install --package 04tKj000000fTEtIAM --target-org YourOrgAlias --wait 20
 ```
 
 ---
@@ -147,7 +147,7 @@ Click the appropriate link above for Production or Sandbox, then:
 **Option B: Use Salesforce CLI**
 
 ```bash
-sf package install --package 04tKj000000fTEoIAM --target-org YourOrgAlias --wait 20 --security-type AdminsOnly
+sf package install --package 04tKj000000fTEtIAM --target-org YourOrgAlias --wait 20 --security-type AdminsOnly
 ```
 
 **Note:** Replace `YourOrgAlias` with your org alias from `sf org login web --alias YourOrgAlias`
@@ -263,7 +263,7 @@ The AI automatically extracts:
 | **API Version** | 61.0 |
 | **Package Type** | Unlocked (namespace-free) |
 | **Package ID** | 0HoKj000000XuZsKAK |
-| **Version** | 1.1.0-1 (Released) |
+| **Version** | 1.3.0-1 (Released) |
 | **AI Model** | OpenAI GPT-4 Omni (vision-capable) |
 | **Supported Files** | .jpg, .png, .pdf (Note: .jpeg not supported) |
 | **Max File Size** | 15 MB |
@@ -395,6 +395,6 @@ This package is provided as-is for internal use. Review your organization's poli
 
 ---
 
-**Package Version:** 1.2.1-1
-**Last Updated:** March 2026
+**Package Version:** 1.3.0-1
+**Last Updated:** March 8, 2026
 **Status:** ✅ Production Ready

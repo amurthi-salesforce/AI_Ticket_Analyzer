@@ -1,12 +1,12 @@
 {
   "packageDirectories": [
     {
-      "versionName": "Custom Mobile Apps Permission",
-      "versionNumber": "1.2.1.NEXT",
+      "versionName": "Markdown Output & Enhanced Readability",
+      "versionNumber": "1.3.0.NEXT",
       "path": "force-app",
       "default": true,
       "package": "AI Ticket Analyzer",
-      "versionDescription": "Mobile-optimized AI handwriting recognition for field service tickets. Extract structured data from handwritten delivery and service receipts using Agentforce.",
+      "versionDescription": "Markdown output for improved mobile readability, strict file validation (.jpg, .png, .pdf only), and enhanced typography for field technicians.",
       "definitionFile": "config/project-scratch-def.json",
       "packageMetadataAccess": {
         "permissionSets": [
@@ -23,6 +23,7 @@
     "AI Ticket Analyzer": "0HoKj000000XuZsKAK",
     "AI Ticket Analyzer@1.1.0-1": "04tKj000000fTEeIAM",
     "AI Ticket Analyzer@1.2.0-1": "04tKj000000fTEjIAM",
-    "AI Ticket Analyzer@1.2.1-1": "04tKj000000fTEoIAM"
+    "AI Ticket Analyzer@1.2.1-1": "04tKj000000fTEoIAM",
+    "AI Ticket Analyzer@1.3.0-1": "04tKj000000fTEtIAM"
   }
 }

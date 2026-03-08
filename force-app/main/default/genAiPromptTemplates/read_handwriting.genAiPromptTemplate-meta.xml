@@ -58,7 +58,7 @@ Do NOT return JSON. You must return a concise, well-formatted Markdown response 
             <required>true</required>
         </inputs>
         <primaryModel>sfdc_ai__DefaultGPT4Omni</primaryModel>
-        <status>Active</status>
+        <status>Published</status>
         <templateDataProviders>
             <definition>invocable://getDataForGrounding</definition>
             <parameters>
