@@ -34,11 +34,14 @@ https://test.salesforce.com/packaging/installPackage.apexp?p0=04tKj000000fTEeIAM
 
 ### CLI Installation
 
+**Prerequisites:** Authenticate to your org first:
 ```bash
-sf package install \
-  --package 04tKj000000fTEeIAM \
-  --target-org your-org-alias \
-  --wait 20
+sf org login web --alias YourOrgAlias
+```
+
+Then install the package (replace `YourOrgAlias` with your actual org alias):
+```bash
+sf package install --package 04tKj000000fTEeIAM --target-org YourOrgAlias --wait 20
 ```
 
 ---
@@ -145,12 +148,10 @@ Click the appropriate link above for Production or Sandbox, then:
 **Option B: Use Salesforce CLI**
 
 ```bash
-sf package install \
-  --package 04tKj000000fTEZIA2 \
-  --target-org your-org-alias \
-  --wait 20 \
-  --security-type AdminsOnly
+sf package install --package 04tKj000000fTEeIAM --target-org YourOrgAlias --wait 20 --security-type AdminsOnly
 ```
+
+**Note:** Replace `YourOrgAlias` with your org alias from `sf org login web --alias YourOrgAlias`
 
 ### Step 2: Enable Agentforce Features
 
@@ -339,11 +340,8 @@ If you prefer to deploy the source code directly instead of installing the packa
 git clone https://github.com/amurthi-salesforce/AI_Ticket_Analyzer.git
 cd AI_Ticket_Analyzer
 
-# Deploy the components
-sf project deploy start \
-  --source-dir force-app \
-  --target-org your-org-alias \
-  --test-level RunLocalTests
+# Deploy the components (replace YourOrgAlias with your actual org alias)
+sf project deploy start --source-dir force-app --target-org YourOrgAlias --test-level RunLocalTests
 ```
 
 ### Configure App Extension (Manual UI Setup Required)
@@ -363,17 +361,10 @@ AppExtension is a metadata-only object and cannot be created programmatically wi
 sf org login web --set-default-dev-hub --alias my-dev-hub
 
 # Create new package version
-sf package version create \
-  --package "AI Ticket Analyzer" \
-  --installation-key-bypass \
-  --code-coverage \
-  --wait 20 \
-  --target-dev-hub my-dev-hub
+sf package version create --package "AI Ticket Analyzer" --installation-key-bypass --code-coverage --wait 20 --target-dev-hub my-dev-hub
 
 # Promote to production (after testing)
-sf package version promote \
-  --package 04tXXXXXXXXXXXXXX \
-  --target-dev-hub my-dev-hub
+sf package version promote --package 04tXXXXXXXXXXXXXX --target-dev-hub my-dev-hub
 ```
 
 ### Direct Source Deployment
@@ -381,10 +372,8 @@ sf package version promote \
 For development/testing without packaging:
 
 ```bash
-sf project deploy start \
-  --source-dir ai-ticket-analyzer/force-app \
-  --target-org your-org-alias \
-  --test-level RunLocalTests
+# Replace YourOrgAlias with your actual org alias
+sf project deploy start --source-dir force-app --target-org YourOrgAlias --test-level RunLocalTests
 ```
 
 ---
