@@ -123,10 +123,20 @@ export default class AiTicketAnalyzer extends LightningElement {
             return;
         }
 
-        // Validate file type
-        const validTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/gif', 'image/webp', 'application/pdf'];
-        if (!validTypes.includes(file.type)) {
-            this.showError('Invalid file type. Please select an image (JPG, PNG) or PDF file.');
+        // Validate file type (only types supported by the AI model)
+        // Note: AI model specifically requires .jpg (not .jpeg), .png, or .pdf extensions
+        const validExtensions = ['.jpg', '.png', '.pdf'];
+        const fileExtension = file.name.toLowerCase().substring(file.name.lastIndexOf('.'));
+
+        if (!validExtensions.includes(fileExtension)) {
+            this.showError('Unsupported file type. Please use .jpg, .png, or .pdf files only.\n\nNote: .jpeg files are not supported - please convert to .jpg first.');
+            return;
+        }
+
+        // Additional MIME type validation for security
+        const validMimeTypes = ['image/jpeg', 'image/png', 'application/pdf'];
+        if (!validMimeTypes.includes(file.type)) {
+            this.showError('Invalid file format detected. Please select a valid JPG, PNG, or PDF file.');
             return;
         }
 

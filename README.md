@@ -79,8 +79,8 @@ sf package install --package 04tKj000000fTEoIAM --target-org YourOrgAlias --wait
 ### Key Features
 
 - ✅ **Mobile-First Design** - Touch-optimized for FSL Mobile App
-- ✅ **Offline Detection** - Queues uploads when connection unavailable
-- ✅ **Smart Validation** - File type and size checking (JPG, PNG, PDF up to 10MB)
+- ✅ **Offline Detection** - Real-time status monitoring with graceful UI degradation
+- ✅ **Smart Validation** - File type (.jpg, .png, .pdf) and size checking (up to 15MB)
 - ✅ **AI-Powered OCR** - Handles messy handwriting with confidence scoring
 - ✅ **Structured JSON Output** - Ready for automation and record creation
 
@@ -263,7 +263,7 @@ The AI automatically extracts:
 | **Package ID** | 0HoKj000000XuZsKAK |
 | **Version** | 1.1.0-1 (Released) |
 | **AI Model** | OpenAI GPT-4 Omni (vision-capable) |
-| **Supported Files** | JPG, PNG, PDF |
+| **Supported Files** | .jpg, .png, .pdf (Note: .jpeg not supported) |
 | **Max File Size** | 15 MB |
 | **Code Coverage** | Packaging-validated |
 | **Security** | `with sharing` on Apex, Einstein Trust Layer for AI |
@@ -312,7 +312,7 @@ The AI automatically extracts:
 
 **Solution:**
 1. Verify file is under 15MB
-2. Check file type is JPG, PNG, or PDF
+2. Check file extension is .jpg, .png, or .pdf (Note: .jpeg files are not supported by the AI model)
 3. Confirm user has ContentVersion create permission
 4. Review Apex debug logs for details
 

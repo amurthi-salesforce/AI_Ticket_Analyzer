@@ -35,10 +35,10 @@
             <!-- File Upload Section -->
             <div class="upload-section">
                 <div class="file-input-container">
-                    <input 
-                        type="file" 
-                        class="file-input" 
-                        accept="image/*,.pdf"
+                    <input
+                        type="file"
+                        class="file-input"
+                        accept=".jpg,.png,.pdf,image/jpeg,image/png,application/pdf"
                         data-id="fileInput"
                         onchange={handleFileChange}
                         aria-label="Select file to upload"
@@ -67,7 +67,7 @@
                                 alternative-text="Upload">
                             </lightning-icon>
                             <p class="upload-text slds-var-m-top_small">Tap to select image</p>
-                            <p class="upload-hint slds-text-body_small">Supports JPG, PNG, PDF</p>
+                            <p class="upload-hint slds-text-body_small">Supports .jpg, .png, .pdf only</p>
                         </template>
                     </div>
                 </div>
