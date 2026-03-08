@@ -51,13 +51,13 @@ sf package install --package 04tKj000000fTEoIAM --target-org YourOrgAlias --wait
 | Feature | Package Installation | Manual Deployment |
 |---------|---------------------|-------------------|
 | **Ease of Use** | ✅ One-click install | ❌ Requires CLI/DevOps |
-| **FSL Mobile Setup** | ⚠️ Manual UI setup required | ⚠️ Manual UI setup required |
+| **FSL Mobile Setup** | ⚠️ Manual page layout configuration required | ⚠️ Manual page layout configuration required |
 | **Version Management** | ✅ Built-in | ❌ Manual tracking |
 | **Upgrades** | ✅ Simple package update | ❌ Redeploy all files |
 | **Distribution** | ✅ Share install link | ❌ Share source code |
 | **Best For** | Production orgs, customers | Development, customization |
 
-**Note:** Both installation methods require manual UI configuration of the App Extension. AppExtension is a metadata-only object that cannot be created with Apex or automated scripts.
+**Note:** Both installation methods require adding the Quick Action to the Work Order page layout (Step 3).
 
 **Recommendation:** Use package installation for production. Use manual deployment only if you need to customize the code.
 
@@ -158,7 +158,7 @@ sf package install --package 04tKj000000fTEoIAM --target-org YourOrgAlias --wait
 
 **⚠️ IMPORTANT:** After package installation completes, you MUST complete Steps 2 and 3 below:
 - **Step 2:** Activate the prompt template "Read Handwriting - Delivery Tickets"
-- **Step 3:** Manually configure the FSL Mobile App Extension (cannot be automated)
+- **Step 3:** Add the Quick Action to the Work Order page layout
 
 ### Step 2: Enable and Activate Prompt Template (**REQUIRED**)
 
@@ -173,36 +173,31 @@ sf package install --package 04tKj000000fTEoIAM --target-org YourOrgAlias --wait
 
 **Note:** The package deploys the template in Published status, but you must verify it's active in your org.
 
-### Step 3: Configure FSL Mobile App Extension (**REQUIRED**)
+### Step 3: Add Quick Action to Work Order Page Layout (**REQUIRED**)
 
-**⚠️ CRITICAL: AppExtension is a metadata-only object and MUST be configured manually via Salesforce UI.**
+**⚠️ CRITICAL:** The AI Ticket Analyzer must be added to the Work Order page layout for field technicians to access it.
 
-AppExtension and FieldServiceMobileSettings are **metadata objects** that cannot be manipulated with Apex DML (insert/update/delete) - even if you can query them with SOQL. They can only be configured through the Salesforce UI or Metadata API.
+**Configure the Quick Action:**
 
-**Manual UI Configuration (ONLY Method):**
+1. Navigate to **Setup** in Salesforce
+2. In the **Quick Find** box, type `Object Manager` and select it
+3. Find and click on **Work Order**
+4. Click **Page Layouts** from the left sidebar
+5. Click on the page layout used by your field technicians (typically **Work Order Layout** or **FSL Work Order Layout**)
+6. Find the **Salesforce Mobile and Lightning Experience Actions** section (usually at the top of the layout editor)
+7. In the action palette on the left, locate **Analyze Ticket with AI** under Quick Actions
+8. **Drag and drop** the **Analyze Ticket with AI** action into the **Mobile & Lightning Actions** section
+9. Position it near the top for easy access by field technicians
+10. Click **Save**
 
-1. Log in to Salesforce and click the **Gear Icon (⚙️)** in the top right to open Setup
-2. In the **Quick Find** box, type `Field Service Mobile Settings` and click on it
-3. Click **Edit** next to your active mobile setting profile (usually named "Field Service Mobile Settings")
-4. Scroll down to the **App Extensions** section
-5. Click the **New** button and enter these exact values:
-   - **Field Service Mobile Settings:** (Leave as default)
-   - **Label:** `Analyze Ticket with AI`
-   - **Name:** `Analyze_Ticket_with_AI`
-   - **Type:** `Lightning App`
-   - **Launch Value:** `aiTicketAnalyzer`
-   - **Scoped To Object Types:** `WorkOrder`
-6. Click **Save**
+**📱 Pro Tip for Mobile Users:**
 
-**📱 Important:** Mobile users must **log out and log back in** to the FSL Mobile App for the new action to appear. Simply refreshing or pulling down to sync is not sufficient.
+After adding the Quick Action to the page layout, mobile users may need to **log out and log back in** to the Field Service Mobile app to see the new action appear. Simply pulling down to refresh or syncing may not be sufficient due to mobile session caching.
 
-**Verify App Extension Setup:**
-1. Navigate to **Setup** → **Field Service Settings** → **Field Service Mobile**
-2. Click on your mobile settings record
-3. Under **App Extensions** section, verify:
-   - **Analyze Ticket with AI** appears in the list
-   - **Status** column shows **"Active"**
-   - **Launch Value** shows **"aiTicketAnalyzer"**
+**Verify Quick Action Setup:**
+1. Open any **Work Order** record in Salesforce
+2. Look for the **Analyze Ticket with AI** button in the highlights panel or actions menu
+3. In the **Field Service Mobile App**, open a Work Order and verify the action appears in the action bar
 
 ### Step 4: Assign Permission Set (**REQUIRED for FSL Mobile App**)
 
@@ -229,18 +224,7 @@ AppExtension and FieldServiceMobileSettings are **metadata objects** that cannot
 
 **Note:** Without these permissions, the component will redirect to the browser instead of opening within the FSL Mobile App.
 
-### Step 5 (Optional): Add Quick Action to Work Order Layout
-
-While the App Extension provides mobile access, you can also add a Quick Action for desktop users:
-
-1. Navigate to **Setup** → **Object Manager** → **Work Order** → **Page Layouts**
-2. Edit the page layout used by field technicians
-3. In **Salesforce Mobile and Lightning Experience Actions**:
-   - Drag **Analyze Ticket with AI** to the actions area
-   - Position near the top for easy access
-4. Click **Save**
-
-### Step 6: Test the Installation
+### Step 5: Test the Installation
 
 1. Open any Work Order record
 2. Click **Analyze Ticket with AI** quick action
@@ -337,16 +321,16 @@ The AI automatically extracts:
 3. Confirm user has ContentVersion create permission
 4. Review Apex debug logs for details
 
-### App Extension Not Appearing in FSL Mobile App
-**Cause:** App Extension not configured (must be done manually via UI)
+### Quick Action Not Appearing in FSL Mobile App
+**Cause:** Quick Action not added to Work Order page layout
 
 **Solution:**
 
-AppExtension is a **metadata-only object** and must be configured through the Salesforce UI. Follow Step 3 in the installation instructions above to manually add the App Extension through Setup → Field Service Mobile Settings.
+The **Analyze Ticket with AI** Quick Action must be added to the Work Order page layout. Follow Step 3 in the installation instructions above to add the Quick Action through Setup → Object Manager → Work Order → Page Layouts.
 
-**Note:** There is no automated script for this - AppExtension cannot be created/modified with Apex DML.
+**Mobile users:** After the admin adds the Quick Action to the page layout, you may need to **log out and log back in** to the Field Service Mobile app for the action to appear.
 
-### FSL Mobile App Redirects to Browser Instead of Opening LWC
+### Quick Action Opens in Browser Instead of FSL Mobile App
 **Cause:** User missing required FSL Mobile permissions
 
 **Solution:**
@@ -363,7 +347,7 @@ Two critical permissions are required for LWC components to function properly wi
 5. If not assigned: Click **Add Assignments** → Select the user → Click **Assign**
 6. **CRITICAL:** Have the user **log out and log back in** to the FSL Mobile App (pulling down to refresh is NOT sufficient)
 
-**What this fixes:** Without these permissions, clicking the App Extension action will open the component in the device's browser instead of staying within the FSL Mobile App. With both permissions assigned and after logging back in, the LWC will open directly in the FSL Mobile App.
+**What this fixes:** Without these permissions, clicking the Quick Action will open the component in the device's browser instead of staying within the FSL Mobile App. With both permissions assigned and after logging back in, the LWC will open directly in the FSL Mobile App.
 
 ---
 
@@ -382,11 +366,11 @@ cd AI_Ticket_Analyzer
 sf project deploy start --source-dir force-app --target-org YourOrgAlias --test-level RunLocalTests
 ```
 
-### Configure App Extension (Manual UI Setup Required)
+### Configure Quick Action on Page Layout (Manual Setup Required)
 
-**IMPORTANT:** After deploying the source code, you MUST manually configure the App Extension through the Salesforce UI (see Step 3 in the Installation section above).
+**IMPORTANT:** After deploying the source code, you MUST add the Quick Action to the Work Order page layout through the Salesforce UI (see Step 3 in the Installation section above).
 
-AppExtension is a metadata-only object and cannot be created programmatically with Apex. Follow the manual UI configuration steps to add the "Analyze Ticket with AI" extension to your Field Service Mobile Settings.
+Follow the page layout configuration steps to add the "Analyze Ticket with AI" Quick Action to the Work Order layout used by field technicians.
 
 ---
 
