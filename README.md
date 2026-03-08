@@ -24,12 +24,12 @@ This package solves the common field service challenge of manually transcribing 
 
 **Production Orgs:**
 ```
-https://login.salesforce.com/packaging/installPackage.apexp?p0=04tKj000000fTEjIAM
+https://login.salesforce.com/packaging/installPackage.apexp?p0=04tKj000000fTEoIAM
 ```
 
 **Sandbox Orgs:**
 ```
-https://test.salesforce.com/packaging/installPackage.apexp?p0=04tKj000000fTEjIAM
+https://test.salesforce.com/packaging/installPackage.apexp?p0=04tKj000000fTEoIAM
 ```
 
 ### CLI Installation
@@ -41,7 +41,7 @@ sf org login web --alias YourOrgAlias
 
 Then install the package (replace `YourOrgAlias` with your actual org alias):
 ```bash
-sf package install --package 04tKj000000fTEjIAM --target-org YourOrgAlias --wait 20
+sf package install --package 04tKj000000fTEoIAM --target-org YourOrgAlias --wait 20
 ```
 
 ---
@@ -149,7 +149,7 @@ Click the appropriate link above for Production or Sandbox, then:
 **Option B: Use Salesforce CLI**
 
 ```bash
-sf package install --package 04tKj000000fTEjIAM --target-org YourOrgAlias --wait 20 --security-type AdminsOnly
+sf package install --package 04tKj000000fTEoIAM --target-org YourOrgAlias --wait 20 --security-type AdminsOnly
 ```
 
 **Note:** Replace `YourOrgAlias` with your org alias from `sf org login web --alias YourOrgAlias`
@@ -190,11 +190,11 @@ AppExtension and FieldServiceMobileSettings are **metadata objects** that cannot
    - **Label:** `Analyze Ticket with AI`
    - **Name:** `Analyze_Ticket_with_AI`
    - **Type:** `Lightning App`
-   - **Launch Value:** `c__aiTicketAnalyzer`
+   - **Launch Value:** `aiTicketAnalyzer`
    - **Scoped To Object Types:** `WorkOrder`
 6. Click **Save**
 
-**📱 Important:** Mobile users may need to pull down on their app screen to sync changes before the new action appears!
+**📱 Important:** Mobile users must **log out and log back in** to the FSL Mobile App for the new action to appear. Simply refreshing or pulling down to sync is not sufficient.
 
 **Verify App Extension Setup:**
 1. Navigate to **Setup** → **Field Service Settings** → **Field Service Mobile**
@@ -202,7 +202,7 @@ AppExtension and FieldServiceMobileSettings are **metadata objects** that cannot
 3. Under **App Extensions** section, verify:
    - **Analyze Ticket with AI** appears in the list
    - **Status** column shows **"Active"**
-   - **Launch Value** shows **"c__aiTicketAnalyzer"**
+   - **Launch Value** shows **"aiTicketAnalyzer"**
 
 ### Step 4: Assign Permission Set (**REQUIRED for FSL Mobile App**)
 
@@ -219,12 +219,15 @@ AppExtension and FieldServiceMobileSettings are **metadata objects** that cannot
 
 **What this permission set includes:**
 - ✅ **Lightning SDK for Field Service Mobile** (enables LWC in FSL Mobile App)
+- ✅ **Custom Applications for Field Service Mobile** (required for custom app extensions)
 - ✅ **FileUploadAIProcessor** Apex class access
 - ✅ **WorkOrder** read access
 - ✅ **ContentVersion/ContentDocument** create and read access
 - ✅ **ContentDocumentLink** create and read access
 
-**Note:** Without the "Lightning SDK for Field Service Mobile" permission, the component will redirect to the browser instead of opening within the FSL Mobile App.
+**⚠️ IMPORTANT:** After assigning the permission set, users MUST log out and log back in to the FSL Mobile App for the changes to take effect. Simply pulling down to refresh will not work.
+
+**Note:** Without these permissions, the component will redirect to the browser instead of opening within the FSL Mobile App.
 
 ### Step 5 (Optional): Add Quick Action to Work Order Layout
 
@@ -344,20 +347,23 @@ AppExtension is a **metadata-only object** and must be configured through the Sa
 **Note:** There is no automated script for this - AppExtension cannot be created/modified with Apex DML.
 
 ### FSL Mobile App Redirects to Browser Instead of Opening LWC
-**Cause:** User missing "Lightning SDK for Field Service Mobile" permission
+**Cause:** User missing required FSL Mobile permissions
 
 **Solution:**
 
-This is a critical permission required for LWC components to function properly within the FSL Mobile App context.
+Two critical permissions are required for LWC components to function properly within the FSL Mobile App:
+1. **Lightning SDK for Field Service Mobile** (FieldServiceAccess)
+2. **Custom Applications for Field Service Mobile** (CustomMobileAppsAccess)
 
+**Steps to fix:**
 1. Navigate to **Setup** → **Permission Sets**
 2. Find **"AI Ticket Analyzer User"** permission set
 3. Click **Manage Assignments**
 4. Verify the affected user is assigned to this permission set
 5. If not assigned: Click **Add Assignments** → Select the user → Click **Assign**
-6. Have the user log out and log back into the FSL Mobile App
+6. **CRITICAL:** Have the user **log out and log back in** to the FSL Mobile App (pulling down to refresh is NOT sufficient)
 
-**What this fixes:** Without the "Lightning SDK for Field Service Mobile" permission, clicking the App Extension action will open the component in the device's browser instead of staying within the FSL Mobile App. With the permission assigned, the LWC will open directly in the FSL Mobile App.
+**What this fixes:** Without these permissions, clicking the App Extension action will open the component in the device's browser instead of staying within the FSL Mobile App. With both permissions assigned and after logging back in, the LWC will open directly in the FSL Mobile App.
 
 ---
 
@@ -412,7 +418,14 @@ sf project deploy start --source-dir force-app --target-org YourOrgAlias --test-
 
 ## 📈 Version History
 
-### Version 1.2.0-1 (Current - Released)
+### Version 1.2.1-1 (Current - Released)
+- ✅ Added **Custom Applications for Field Service Mobile** permission (CustomMobileAppsAccess)
+- ✅ Fixed launch value from "c__aiTicketAnalyzer" to "aiTicketAnalyzer"
+- ✅ Updated documentation: users must log out/log in (not just refresh)
+- ✅ Enhanced permission set with both required FSL Mobile permissions
+- ✅ Clarified troubleshooting for FSL Mobile redirect issue
+
+### Version 1.2.0-1 (Released)
 - ✅ **Lightning SDK for Field Service Mobile** permission set included
 - ✅ Fixes FSL Mobile App redirecting to browser issue
 - ✅ AI Ticket Analyzer User permission set with FieldServiceAccess
@@ -466,6 +479,6 @@ This package is provided as-is for internal use. Review your organization's poli
 
 ---
 
-**Package Version:** 1.2.0-1
+**Package Version:** 1.2.1-1
 **Last Updated:** March 2026
 **Status:** ✅ Production Ready

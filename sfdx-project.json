@@ -1,8 +1,8 @@
 {
   "packageDirectories": [
     {
-      "versionName": "Lightning SDK Permission Set",
-      "versionNumber": "1.2.0.NEXT",
+      "versionName": "Custom Mobile Apps Permission",
+      "versionNumber": "1.2.1.NEXT",
       "path": "force-app",
       "default": true,
       "package": "AI Ticket Analyzer",
@@ -22,6 +22,7 @@
   "packageAliases": {
     "AI Ticket Analyzer": "0HoKj000000XuZsKAK",
     "AI Ticket Analyzer@1.1.0-1": "04tKj000000fTEeIAM",
-    "AI Ticket Analyzer@1.2.0-1": "04tKj000000fTEjIAM"
+    "AI Ticket Analyzer@1.2.0-1": "04tKj000000fTEjIAM",
+    "AI Ticket Analyzer@1.2.1-1": "04tKj000000fTEoIAM"
   }
 }

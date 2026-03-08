@@ -16,6 +16,11 @@
         <name>FieldServiceAccess</name>
     </userPermissions>
 
+    <userPermissions>
+        <enabled>true</enabled>
+        <name>CustomMobileAppsAccess</name>
+    </userPermissions>
+
     <!-- Object Permissions -->
     <objectPermissions>
         <allowCreate>false</allowCreate>
