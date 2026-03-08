@@ -82,7 +82,7 @@ sf package install --package 04tKj000000fTEoIAM --target-org YourOrgAlias --wait
 - ✅ **Offline Detection** - Real-time status monitoring with graceful UI degradation
 - ✅ **Smart Validation** - File type (.jpg, .png, .pdf) and size checking (up to 15MB)
 - ✅ **AI-Powered OCR** - Handles messy handwriting with confidence scoring
-- ✅ **Structured JSON Output** - Ready for automation and record creation
+- ✅ **Structured Markdown Output** - Readable format for clipboard copy (customizable to JSON for automation)
 
 ---
 
@@ -237,8 +237,10 @@ After adding the Quick Action to the page layout, mobile users may need to **log
 2. **Tap "Analyze Ticket with AI"** quick action
 3. **Take photo** or select from gallery
 4. **Wait for AI processing** (10-30 seconds)
-5. **Review extracted data** in JSON format
+5. **Review extracted data** in structured Markdown format
 6. **Copy to clipboard** or manually enter into fields
+
+**Output Format:** The AI returns well-formatted Markdown for easy reading and clipboard copying. The prompt template can be customized to output JSON instead if you need structured data for automated record creation or updates.
 
 ### Data Extracted
 

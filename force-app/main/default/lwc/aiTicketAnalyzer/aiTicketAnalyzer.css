@@ -230,18 +230,21 @@
     -webkit-overflow-scrolling: touch;
 }
 
+/* Markdown output display - optimized for readability on mobile */
 .results-text {
-    font-family: 'SF Mono', 'Consolas', 'Monaco', 'Menlo', monospace;
-    font-size: 12px;
-    line-height: 1.6;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    font-size: 13px;
+    line-height: 1.7;
     color: #181818;
     white-space: pre-wrap;
     word-break: break-word;
     margin: 0;
     background: #ffffff;
-    padding: 12px;
+    padding: 16px;
     border-radius: 8px;
     border: 1px solid #e5e5e5;
+    /* Enhanced markdown readability */
+    text-align: left;
 }
 
 .results-actions {
@@ -276,9 +279,10 @@
     .results-content {
         max-height: 300px;
     }
-    
+
     .results-text {
-        font-size: 11px;
+        font-size: 12px;
+        padding: 12px;
     }
 }
 
