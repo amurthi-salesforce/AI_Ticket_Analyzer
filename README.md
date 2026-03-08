@@ -186,7 +186,7 @@ sf apex run \
   --target-org your-org-alias
 ```
 
-**Alternative - Developer Console Method:**
+**Option B (Alternative) - Developer Console Method:**
 1. Deploy the `manual-setup/classes` folder to your org
 2. Open Developer Console → Debug → Open Execute Anonymous Window
 3. Execute:
@@ -195,11 +195,32 @@ List<FieldServiceMobileSettings> settings = [SELECT Id FROM FieldServiceMobileSe
 AppExtensionSetupService.setupAiAnalyzer(settings);
 ```
 
-**What this does:**
-- Finds your existing Field Service Mobile Settings
-- Adds the "Analyze Ticket with AI" App Extension
-- Scopes it to WorkOrder object
-- Makes it available in FSL Mobile App
+**Option C (Alternative) - Manual UI Configuration:**
+
+If you prefer to configure via Salesforce UI without running scripts:
+
+1. Log in to Salesforce and click the **Gear Icon (⚙️)** in the top right to open Setup
+2. In the **Quick Find** box, type `Field Service Mobile Settings` and click on it
+3. Click **Edit** next to your active mobile setting profile (usually named "Field Service Mobile Settings")
+4. Scroll down to the **App Extensions** section
+5. Click the **New** button and enter these exact values:
+   - **Field Service Mobile Settings:** (Leave as default)
+   - **Label:** `Analyze Ticket with AI`
+   - **Name:** `Analyze_Ticket_with_AI`
+   - **Type:** `Lightning App`
+   - **Launch Value:** `c__aiTicketAnalyzer`
+   - **Scoped To Object Types:** `WorkOrder`
+6. Click **Save**
+
+**📱 Important:** Mobile users may need to pull down on their app screen to sync changes before the new action appears!
+
+---
+
+**What these methods do:**
+- Find your existing Field Service Mobile Settings
+- Add the "Analyze Ticket with AI" App Extension
+- Scope it to WorkOrder object
+- Make it available in FSL Mobile App
 
 **Verify Setup:**
 1. Navigate to **Setup** → **Field Service Settings** → **Field Service Mobile**
