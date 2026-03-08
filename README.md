@@ -48,13 +48,13 @@ sf package install \
 | Feature | Package Installation | Manual Deployment |
 |---------|---------------------|-------------------|
 | **Ease of Use** | ✅ One-click install | ❌ Requires CLI/DevOps |
-| **FSL Mobile Setup** | ⚠️ Manual script required | ⚠️ Manual script required |
+| **FSL Mobile Setup** | ⚠️ Manual UI setup required | ⚠️ Manual UI setup required |
 | **Version Management** | ✅ Built-in | ❌ Manual tracking |
 | **Upgrades** | ✅ Simple package update | ❌ Redeploy all files |
 | **Distribution** | ✅ Share install link | ❌ Share source code |
 | **Best For** | Production orgs, customers | Development, customization |
 
-**Note:** Both installation methods require running the manual setup script due to Salesforce packaging restrictions on Field Service objects.
+**Note:** Both installation methods require manual UI configuration of the App Extension. AppExtension is a metadata-only object that cannot be created with Apex or automated scripts.
 
 **Recommendation:** Use package installation for production. Use manual deployment only if you need to customize the code.
 
@@ -161,43 +161,11 @@ sf package install \
 
 ### Step 3: Configure FSL Mobile App Extension (**REQUIRED**)
 
-**⚠️ IMPORTANT: Due to Salesforce packaging restrictions, you MUST manually add the App Extension after package installation.**
+**⚠️ CRITICAL: AppExtension is a metadata-only object and MUST be configured manually via Salesforce UI.**
 
-Field Service objects (AppExtension, FieldServiceMobileSettings) cannot be manipulated in package install scripts. Follow these steps:
+AppExtension and FieldServiceMobileSettings are **metadata objects** that cannot be manipulated with Apex DML (insert/update/delete) - even if you can query them with SOQL. They can only be configured through the Salesforce UI or Metadata API.
 
-**Step 3a: Deploy the Setup Service Class**
-
-```bash
-# Clone this repository first
-git clone https://github.com/amurthi-salesforce/AI_Ticket_Analyzer.git
-cd AI_Ticket_Analyzer
-
-# Deploy the setup service class
-sf project deploy start \
-  --source-dir manual-setup/classes \
-  --target-org your-org-alias
-```
-
-**Step 3b: Run the Setup Script**
-
-```bash
-sf apex run \
-  --file scripts/apex/setupExtension.apex \
-  --target-org your-org-alias
-```
-
-**Option B (Alternative) - Developer Console Method:**
-1. Deploy the `manual-setup/classes` folder to your org
-2. Open Developer Console → Debug → Open Execute Anonymous Window
-3. Execute:
-```apex
-List<FieldServiceMobileSettings> settings = [SELECT Id FROM FieldServiceMobileSettings LIMIT 50];
-AppExtensionSetupService.setupAiAnalyzer(settings);
-```
-
-**Option C (Alternative) - Manual UI Configuration:**
-
-If you prefer to configure via Salesforce UI without running scripts:
+**Manual UI Configuration (ONLY Method):**
 
 1. Log in to Salesforce and click the **Gear Icon (⚙️)** in the top right to open Setup
 2. In the **Quick Find** box, type `Field Service Mobile Settings` and click on it
@@ -213,14 +181,6 @@ If you prefer to configure via Salesforce UI without running scripts:
 6. Click **Save**
 
 **📱 Important:** Mobile users may need to pull down on their app screen to sync changes before the new action appears!
-
----
-
-**What these methods do:**
-- Find your existing Field Service Mobile Settings
-- Add the "Analyze Ticket with AI" App Extension
-- Scope it to WorkOrder object
-- Make it available in FSL Mobile App
 
 **Verify Setup:**
 1. Navigate to **Setup** → **Field Service Settings** → **Field Service Mobile**
@@ -358,28 +318,13 @@ The AI automatically extracts:
 4. Review Apex debug logs for details
 
 ### App Extension Not Appearing in FSL Mobile App
-**Cause:** Post-install script didn't run or Field Service Mobile Settings missing
+**Cause:** App Extension not configured (must be done manually via UI)
 
 **Solution:**
 
-**If you installed via package:**
-1. Navigate to **Setup** → **Debug Logs**
-2. Check for post-install script execution
-3. Look for `AppExtensionInstallHandler` in logs
+AppExtension is a **metadata-only object** and must be configured through the Salesforce UI. Follow Step 3 in the installation instructions above to manually add the App Extension through Setup → Field Service Mobile Settings.
 
-**If Field Service was enabled after package installation:**
-1. Run the manual setup script:
-   ```bash
-   sf apex run --file ai-ticket-analyzer/scripts/apex/setupExtension.apex --target-org your-org
-   ```
-2. Or execute in Developer Console:
-   ```apex
-   AppExtensionInstallHandler handler = new AppExtensionInstallHandler();
-   handler.onInstall(null);
-   ```
-
-**If you deployed source code manually:**
-- You MUST run the setupExtension.apex script (see Manual Deployment section)
+**Note:** There is no automated script for this - AppExtension cannot be created/modified with Apex DML.
 
 ---
 
@@ -394,39 +339,18 @@ If you prefer to deploy the source code directly instead of installing the packa
 git clone https://github.com/amurthi-salesforce/AI_Ticket_Analyzer.git
 cd AI_Ticket_Analyzer
 
-# Deploy the main components
+# Deploy the components
 sf project deploy start \
   --source-dir force-app \
   --target-org your-org-alias \
   --test-level RunLocalTests
-
-# Deploy the FSL setup service class
-sf project deploy start \
-  --source-dir manual-setup/classes \
-  --target-org your-org-alias
 ```
 
-### Run App Extension Setup Script
+### Configure App Extension (Manual UI Setup Required)
 
-**IMPORTANT:** After deploying all components, run this script to add the App Extension to FSL Mobile:
+**IMPORTANT:** After deploying the source code, you MUST manually configure the App Extension through the Salesforce UI (see Step 3 in the Installation section above).
 
-```bash
-sf apex run \
-  --file scripts/apex/setupExtension.apex \
-  --target-org your-org-alias
-```
-
-**What this script does:**
-- Finds your Field Service Mobile Settings
-- Creates an AppExtension record for "Analyze Ticket with AI"
-- Links it to WorkOrder object
-- Makes it available in FSL Mobile App
-
-**Verify the setup:**
-1. Navigate to **Setup** → **Field Service Settings** → **Field Service Mobile**
-2. Check that **Analyze Ticket with AI** appears under **App Extensions**
-
-**Note:** Both package installation and manual deployment require running the setup script due to Salesforce packaging restrictions on Field Service objects.
+AppExtension is a metadata-only object and cannot be created programmatically with Apex. Follow the manual UI configuration steps to add the "Analyze Ticket with AI" extension to your Field Service Mobile Settings.
 
 ---
 
