@@ -12,7 +12,7 @@ This package solves the common field service challenge of manually transcribing 
 - 📸 Take photos of handwritten receipts directly from their mobile device
 - 🤖 Automatically extract customer, delivery, and service data using Agentforce AI
 - ✍️ Handle poor handwriting quality ("chicken scratch")
-- 📱 Work offline (files upload when connection restored)
+- 📱 Offline detection with graceful UI degradation (requires connection for AI processing)
 - ✅ Reduce manual data entry errors by 80-90%
 - ⚡ Speed up ticket processing from 5-10 minutes to 30 seconds
 
