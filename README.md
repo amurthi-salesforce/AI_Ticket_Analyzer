@@ -24,22 +24,39 @@ This package solves the common field service challenge of manually transcribing 
 
 **Production Orgs:**
 ```
-https://login.salesforce.com/packaging/installPackage.apexp?p0=04tKj000000fTEZIA2
+https://login.salesforce.com/packaging/installPackage.apexp?p0=04tKj000000fTEeIAM
 ```
 
 **Sandbox Orgs:**
 ```
-https://test.salesforce.com/packaging/installPackage.apexp?p0=04tKj000000fTEZIA2
+https://test.salesforce.com/packaging/installPackage.apexp?p0=04tKj000000fTEeIAM
 ```
 
 ### CLI Installation
 
 ```bash
 sf package install \
-  --package 04tKj000000fTEZIA2 \
+  --package 04tKj000000fTEeIAM \
   --target-org your-org-alias \
   --wait 20
 ```
+
+---
+
+## 📌 Installation Methods Comparison
+
+| Feature | Package Installation | Manual Deployment |
+|---------|---------------------|-------------------|
+| **Ease of Use** | ✅ One-click install | ❌ Requires CLI/DevOps |
+| **FSL Mobile Setup** | ⚠️ Manual script required | ⚠️ Manual script required |
+| **Version Management** | ✅ Built-in | ❌ Manual tracking |
+| **Upgrades** | ✅ Simple package update | ❌ Redeploy all files |
+| **Distribution** | ✅ Share install link | ❌ Share source code |
+| **Best For** | Production orgs, customers | Development, customization |
+
+**Note:** Both installation methods require running the manual setup script due to Salesforce packaging restrictions on Field Service objects.
+
+**Recommendation:** Use package installation for production. Use manual deployment only if you need to customize the code.
 
 ---
 
@@ -142,7 +159,57 @@ sf package install \
 3. Navigate to **Setup** → **Prompt Builder**
 4. Verify **read_handwriting** template appears with status **Published**
 
-### Step 3: Add Quick Action to Work Order Layout
+### Step 3: Configure FSL Mobile App Extension (**REQUIRED**)
+
+**⚠️ IMPORTANT: Due to Salesforce packaging restrictions, you MUST manually add the App Extension after package installation.**
+
+Field Service objects (AppExtension, FieldServiceMobileSettings) cannot be manipulated in package install scripts. Follow these steps:
+
+**Step 3a: Deploy the Setup Service Class**
+
+```bash
+# Clone this repository first
+git clone https://github.com/amurthi-salesforce/AI_Ticket_Analyzer.git
+cd AI_Ticket_Analyzer
+
+# Deploy the setup service class
+sf project deploy start \
+  --source-dir manual-setup/classes \
+  --target-org your-org-alias
+```
+
+**Step 3b: Run the Setup Script**
+
+```bash
+sf apex run \
+  --file scripts/apex/setupExtension.apex \
+  --target-org your-org-alias
+```
+
+**Alternative - Developer Console Method:**
+1. Deploy the `manual-setup/classes` folder to your org
+2. Open Developer Console → Debug → Open Execute Anonymous Window
+3. Execute:
+```apex
+List<FieldServiceMobileSettings> settings = [SELECT Id FROM FieldServiceMobileSettings LIMIT 50];
+AppExtensionSetupService.setupAiAnalyzer(settings);
+```
+
+**What this does:**
+- Finds your existing Field Service Mobile Settings
+- Adds the "Analyze Ticket with AI" App Extension
+- Scopes it to WorkOrder object
+- Makes it available in FSL Mobile App
+
+**Verify Setup:**
+1. Navigate to **Setup** → **Field Service Settings** → **Field Service Mobile**
+2. Click on your mobile settings record
+3. Under **App Extensions**, verify **Analyze Ticket with AI** appears
+4. Status should show as **Active**
+
+### Step 4 (Optional): Add Quick Action to Work Order Layout
+
+While the App Extension provides mobile access, you can also add a Quick Action for desktop users:
 
 1. Navigate to **Setup** → **Object Manager** → **Work Order** → **Page Layouts**
 2. Edit the page layout used by field technicians
@@ -151,13 +218,7 @@ sf package install \
    - Position near the top for easy access
 4. Click **Save**
 
-**For FSL Mobile App:**
-1. Navigate to **Setup** → **Field Service Settings** → **Field Service Mobile**
-2. Under **Mobile Actions**, select **Work Order**
-3. Add **Analyze Ticket with AI** to the action list
-4. Click **Save**
-
-### Step 4: Assign Permissions
+### Step 5: Assign Permissions
 
 **Create Permission Set:**
 
@@ -178,7 +239,7 @@ sf package install \
 5. Select field technicians and service managers
 6. Click **Assign**
 
-### Step 5: Test the Installation
+### Step 6: Test the Installation
 
 1. Open any Work Order record
 2. Click **Analyze Ticket with AI** quick action
@@ -220,7 +281,7 @@ The AI automatically extracts:
 | **API Version** | 61.0 |
 | **Package Type** | Unlocked (namespace-free) |
 | **Package ID** | 0HoKj000000XuZsKAK |
-| **Version** | 1.0.0-2 (Released) |
+| **Version** | 1.1.0-1 (Released) |
 | **AI Model** | OpenAI GPT-4 Omni (vision-capable) |
 | **Supported Files** | JPG, PNG, GIF, WEBP, PDF |
 | **Max File Size** | 10MB (configurable) |
@@ -275,6 +336,77 @@ The AI automatically extracts:
 3. Confirm user has ContentVersion create permission
 4. Review Apex debug logs for details
 
+### App Extension Not Appearing in FSL Mobile App
+**Cause:** Post-install script didn't run or Field Service Mobile Settings missing
+
+**Solution:**
+
+**If you installed via package:**
+1. Navigate to **Setup** → **Debug Logs**
+2. Check for post-install script execution
+3. Look for `AppExtensionInstallHandler` in logs
+
+**If Field Service was enabled after package installation:**
+1. Run the manual setup script:
+   ```bash
+   sf apex run --file ai-ticket-analyzer/scripts/apex/setupExtension.apex --target-org your-org
+   ```
+2. Or execute in Developer Console:
+   ```apex
+   AppExtensionInstallHandler handler = new AppExtensionInstallHandler();
+   handler.onInstall(null);
+   ```
+
+**If you deployed source code manually:**
+- You MUST run the setupExtension.apex script (see Manual Deployment section)
+
+---
+
+## 🛠️ Manual Deployment (Alternative to Package)
+
+If you prefer to deploy the source code directly instead of installing the package:
+
+### Deploy Source Code
+
+```bash
+# Clone the repository
+git clone https://github.com/amurthi-salesforce/AI_Ticket_Analyzer.git
+cd AI_Ticket_Analyzer
+
+# Deploy the main components
+sf project deploy start \
+  --source-dir force-app \
+  --target-org your-org-alias \
+  --test-level RunLocalTests
+
+# Deploy the FSL setup service class
+sf project deploy start \
+  --source-dir manual-setup/classes \
+  --target-org your-org-alias
+```
+
+### Run App Extension Setup Script
+
+**IMPORTANT:** After deploying all components, run this script to add the App Extension to FSL Mobile:
+
+```bash
+sf apex run \
+  --file scripts/apex/setupExtension.apex \
+  --target-org your-org-alias
+```
+
+**What this script does:**
+- Finds your Field Service Mobile Settings
+- Creates an AppExtension record for "Analyze Ticket with AI"
+- Links it to WorkOrder object
+- Makes it available in FSL Mobile App
+
+**Verify the setup:**
+1. Navigate to **Setup** → **Field Service Settings** → **Field Service Mobile**
+2. Check that **Analyze Ticket with AI** appears under **App Extensions**
+
+**Note:** Both package installation and manual deployment require running the setup script due to Salesforce packaging restrictions on Field Service objects.
+
 ---
 
 ## 📊 Package Development
@@ -314,7 +446,15 @@ sf project deploy start \
 
 ## 📈 Version History
 
-### Version 1.0.0-2 (Current - Released)
+### Version 1.1.0-1 (Current - Released)
+- ✅ Service class pattern for FSL Mobile App setup
+- ✅ Manual setup script (required due to packaging restrictions)
+- ✅ Bulkified SOQL queries (no SOQL in loops)
+- ✅ Dependency injection pattern for testability
+- ✅ Support for both package and CI/CD deployments
+- ✅ Updated documentation with manual setup requirements
+
+### Version 1.0.0-2 (Released)
 - ✅ Production-ready unlocked package
 - ✅ Mobile-optimized LWC for file upload
 - ✅ Agentforce AI integration for handwriting recognition
@@ -354,6 +494,6 @@ This package is provided as-is for internal use. Review your organization's poli
 
 ---
 
-**Package Version:** 1.0.0-2
+**Package Version:** 1.1.0-1
 **Last Updated:** March 2026
 **Status:** ✅ Production Ready
