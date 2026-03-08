@@ -8,6 +8,7 @@
       "package": "AI Ticket Analyzer",
       "versionDescription": "Mobile-optimized AI handwriting recognition for field service tickets. Extract structured data from handwritten delivery and service receipts using Agentforce.",
       "definitionFile": "config/project-scratch-def.json",
+      "postInstallScript": "AppExtensionInstallHandler",
       "packageMetadataAccess": {
         "permissionSets": [
           "EinsteinGPTPromptTemplateManager"
