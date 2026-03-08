@@ -74,6 +74,7 @@ sf package install --package 04tKj000000fTEeIAM --target-org YourOrgAlias --wait
 | **FileUploadAIProcessorTest** | Apex Test Class | Provides code coverage for packaging |
 | **Read Handwriting - Delivery Tickets** | GenAI Prompt Template | AI instructions for extracting structured data from handwritten tickets |
 | **Analyze_Ticket_with_AI** | Quick Action | One-tap access from Work Order records |
+| **AI Ticket Analyzer User** | Permission Set | Grants Lightning SDK for FSL Mobile and required object/Apex access |
 
 ### Key Features
 
@@ -203,7 +204,29 @@ AppExtension and FieldServiceMobileSettings are **metadata objects** that cannot
    - **Status** column shows **"Active"**
    - **Launch Value** shows **"c__aiTicketAnalyzer"**
 
-### Step 4 (Optional): Add Quick Action to Work Order Layout
+### Step 4: Assign Permission Set (**REQUIRED for FSL Mobile App**)
+
+**⚠️ CRITICAL:** Users must have the "Lightning SDK for Field Service Mobile" permission for the LWC component to work properly in the FSL Mobile App. Without this permission, clicking the action will redirect users to the standard Salesforce app instead of staying in FSL Mobile.
+
+**The package includes a ready-to-use permission set:**
+
+1. Navigate to **Setup** → **Permission Sets**
+2. Find **"AI Ticket Analyzer User"** (installed with the package)
+3. Click **Manage Assignments**
+4. Click **Add Assignments**
+5. Select all field technicians and service managers who will use the FSL Mobile App
+6. Click **Assign**
+
+**What this permission set includes:**
+- ✅ **Lightning SDK for Field Service Mobile** (enables LWC in FSL Mobile App)
+- ✅ **FileUploadAIProcessor** Apex class access
+- ✅ **WorkOrder** read access
+- ✅ **ContentVersion/ContentDocument** create and read access
+- ✅ **ContentDocumentLink** create and read access
+
+**Note:** Without the "Lightning SDK for Field Service Mobile" permission, the component will redirect to the browser instead of opening within the FSL Mobile App.
+
+### Step 5 (Optional): Add Quick Action to Work Order Layout
 
 While the App Extension provides mobile access, you can also add a Quick Action for desktop users:
 
@@ -213,27 +236,6 @@ While the App Extension provides mobile access, you can also add a Quick Action 
    - Drag **Analyze Ticket with AI** to the actions area
    - Position near the top for easy access
 4. Click **Save**
-
-### Step 5: Assign Permissions
-
-**Create Permission Set:**
-
-1. Navigate to **Setup** → **Permission Sets** → **New**
-2. Name: `AI Ticket Analyzer User`
-3. Add these permissions:
-   - **Object Permissions:**
-     - WorkOrder: Read, Edit
-     - ContentVersion: Create, Read
-     - ContentDocument: Read
-     - ContentDocumentLink: Create, Read
-   - **Apex Class Access:**
-     - FileUploadAIProcessor: Enabled
-   - **Custom Permissions:**
-     - Access to Prompt Templates
-
-4. Click **Manage Assignments** → **Add Assignments**
-5. Select field technicians and service managers
-6. Click **Assign**
 
 ### Step 6: Test the Installation
 
@@ -340,6 +342,22 @@ The AI automatically extracts:
 AppExtension is a **metadata-only object** and must be configured through the Salesforce UI. Follow Step 3 in the installation instructions above to manually add the App Extension through Setup → Field Service Mobile Settings.
 
 **Note:** There is no automated script for this - AppExtension cannot be created/modified with Apex DML.
+
+### FSL Mobile App Redirects to Browser Instead of Opening LWC
+**Cause:** User missing "Lightning SDK for Field Service Mobile" permission
+
+**Solution:**
+
+This is a critical permission required for LWC components to function properly within the FSL Mobile App context.
+
+1. Navigate to **Setup** → **Permission Sets**
+2. Find **"AI Ticket Analyzer User"** permission set
+3. Click **Manage Assignments**
+4. Verify the affected user is assigned to this permission set
+5. If not assigned: Click **Add Assignments** → Select the user → Click **Assign**
+6. Have the user log out and log back into the FSL Mobile App
+
+**What this fixes:** Without the "Lightning SDK for Field Service Mobile" permission, clicking the App Extension action will open the component in the device's browser instead of staying within the FSL Mobile App. With the permission assigned, the LWC will open directly in the FSL Mobile App.
 
 ---
 
