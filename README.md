@@ -72,7 +72,7 @@ sf package install --package 04tKj000000fTEeIAM --target-org YourOrgAlias --wait
 | **aiTicketAnalyzer** | Lightning Web Component | Mobile-optimized file upload and AI analysis UI |
 | **FileUploadAIProcessor** | Apex Controller | Handles file uploads and Agentforce API integration |
 | **FileUploadAIProcessorTest** | Apex Test Class | Provides code coverage for packaging |
-| **read_handwriting** | GenAI Prompt Template | AI instructions for extracting structured data |
+| **Read Handwriting - Delivery Tickets** | GenAI Prompt Template | AI instructions for extracting structured data from handwritten tickets |
 | **Analyze_Ticket_with_AI** | Quick Action | One-tap access from Work Order records |
 
 ### Key Features
@@ -153,12 +153,24 @@ sf package install --package 04tKj000000fTEeIAM --target-org YourOrgAlias --wait
 
 **Note:** Replace `YourOrgAlias` with your org alias from `sf org login web --alias YourOrgAlias`
 
-### Step 2: Enable Agentforce Features
+---
+
+**⚠️ IMPORTANT:** After package installation completes, you MUST complete Steps 2 and 3 below:
+- **Step 2:** Activate the prompt template "Read Handwriting - Delivery Tickets"
+- **Step 3:** Manually configure the FSL Mobile App Extension (cannot be automated)
+
+### Step 2: Enable and Activate Prompt Template (**REQUIRED**)
+
+**⚠️ CRITICAL POST-DEPLOYMENT STEP:** The prompt template must be activated after installation.
 
 1. Navigate to **Setup** → **Einstein Setup**
 2. Ensure **Prompt Builder** is enabled
 3. Navigate to **Setup** → **Prompt Builder**
-4. Verify **read_handwriting** template appears with status **Published**
+4. Locate the prompt template named **"Read Handwriting - Delivery Tickets"**
+5. **If status shows "Draft":** Click on the template → Click **Activate** button
+6. **Verify:** Status should now show **"Published"** (active and ready to use)
+
+**Note:** The package deploys the template in Published status, but you must verify it's active in your org.
 
 ### Step 3: Configure FSL Mobile App Extension (**REQUIRED**)
 
@@ -183,11 +195,13 @@ AppExtension and FieldServiceMobileSettings are **metadata objects** that cannot
 
 **📱 Important:** Mobile users may need to pull down on their app screen to sync changes before the new action appears!
 
-**Verify Setup:**
+**Verify App Extension Setup:**
 1. Navigate to **Setup** → **Field Service Settings** → **Field Service Mobile**
 2. Click on your mobile settings record
-3. Under **App Extensions**, verify **Analyze Ticket with AI** appears
-4. Status should show as **Active**
+3. Under **App Extensions** section, verify:
+   - **Analyze Ticket with AI** appears in the list
+   - **Status** column shows **"Active"**
+   - **Launch Value** shows **"c__aiTicketAnalyzer"**
 
 ### Step 4 (Optional): Add Quick Action to Work Order Layout
 
@@ -293,13 +307,13 @@ The AI automatically extracts:
 3. Contact Salesforce Account Team for credit allocation
 
 ### "Prompt template not found"
-**Cause:** Template didn't deploy or isn't published
+**Cause:** Template didn't deploy or isn't activated
 
 **Solution:**
 1. Navigate to Setup → Prompt Builder
-2. Verify `read_handwriting` template exists
-3. Check Status is **Published**
-4. Redeploy if necessary
+2. Verify **"Read Handwriting - Delivery Tickets"** template exists
+3. Check Status is **"Published"** (if showing "Draft", click template and click **Activate**)
+4. If template is missing entirely, redeploy the package
 
 ### Quick Action Not Appearing
 **Cause:** Page layout not updated
