@@ -345,12 +345,6 @@ This package is provided as-is for internal use. Review your organization's poli
 
 ---
 
-## 🙏 Acknowledgments
-
-Built for field service organizations looking to automate handwritten ticket processing using AI. Special thanks to the Salesforce Field Service Lightning and Agentforce teams for providing the platform capabilities that make this solution possible.
-
----
-
 ## 🔗 Resources
 
 - [Salesforce DX Developer Guide](https://developer.salesforce.com/docs/atlas.en-us.sfdx_dev.meta)
