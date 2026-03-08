@@ -24,12 +24,12 @@ This package solves the common field service challenge of manually transcribing 
 
 **Production Orgs:**
 ```
-https://login.salesforce.com/packaging/installPackage.apexp?p0=04tKj000000fTEeIAM
+https://login.salesforce.com/packaging/installPackage.apexp?p0=04tKj000000fTEjIAM
 ```
 
 **Sandbox Orgs:**
 ```
-https://test.salesforce.com/packaging/installPackage.apexp?p0=04tKj000000fTEeIAM
+https://test.salesforce.com/packaging/installPackage.apexp?p0=04tKj000000fTEjIAM
 ```
 
 ### CLI Installation
@@ -41,7 +41,7 @@ sf org login web --alias YourOrgAlias
 
 Then install the package (replace `YourOrgAlias` with your actual org alias):
 ```bash
-sf package install --package 04tKj000000fTEeIAM --target-org YourOrgAlias --wait 20
+sf package install --package 04tKj000000fTEjIAM --target-org YourOrgAlias --wait 20
 ```
 
 ---
@@ -149,7 +149,7 @@ Click the appropriate link above for Production or Sandbox, then:
 **Option B: Use Salesforce CLI**
 
 ```bash
-sf package install --package 04tKj000000fTEeIAM --target-org YourOrgAlias --wait 20 --security-type AdminsOnly
+sf package install --package 04tKj000000fTEjIAM --target-org YourOrgAlias --wait 20 --security-type AdminsOnly
 ```
 
 **Note:** Replace `YourOrgAlias` with your org alias from `sf org login web --alias YourOrgAlias`
@@ -412,13 +412,19 @@ sf project deploy start --source-dir force-app --target-org YourOrgAlias --test-
 
 ## 📈 Version History
 
-### Version 1.1.0-1 (Current - Released)
-- ✅ Service class pattern for FSL Mobile App setup
-- ✅ Manual setup script (required due to packaging restrictions)
-- ✅ Bulkified SOQL queries (no SOQL in loops)
-- ✅ Dependency injection pattern for testability
-- ✅ Support for both package and CI/CD deployments
-- ✅ Updated documentation with manual setup requirements
+### Version 1.2.0-1 (Current - Released)
+- ✅ **Lightning SDK for Field Service Mobile** permission set included
+- ✅ Fixes FSL Mobile App redirecting to browser issue
+- ✅ AI Ticket Analyzer User permission set with FieldServiceAccess
+- ✅ Automatic deployment of required permissions
+- ✅ Updated documentation with permission assignment steps
+- ✅ Enhanced troubleshooting section for FSL Mobile redirect issues
+
+### Version 1.1.0-1 (Released)
+- ✅ Manual UI configuration for FSL Mobile App Extension
+- ✅ Removed invalid Apex classes attempting DML on metadata objects
+- ✅ Clear documentation that AppExtension is metadata-only
+- ✅ Updated installation instructions with manual setup requirements
 
 ### Version 1.0.0-2 (Released)
 - ✅ Production-ready unlocked package
@@ -460,6 +466,6 @@ This package is provided as-is for internal use. Review your organization's poli
 
 ---
 
-**Package Version:** 1.1.0-1
+**Package Version:** 1.2.0-1
 **Last Updated:** March 2026
 **Status:** ✅ Production Ready

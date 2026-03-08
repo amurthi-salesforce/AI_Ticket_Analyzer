@@ -1,8 +1,8 @@
 {
   "packageDirectories": [
     {
-      "versionName": "Automatic FSL Mobile Setup",
-      "versionNumber": "1.1.0.NEXT",
+      "versionName": "Lightning SDK Permission Set",
+      "versionNumber": "1.2.0.NEXT",
       "path": "force-app",
       "default": true,
       "package": "AI Ticket Analyzer",
@@ -21,6 +21,7 @@
   "sourceApiVersion": "61.0",
   "packageAliases": {
     "AI Ticket Analyzer": "0HoKj000000XuZsKAK",
-    "AI Ticket Analyzer@1.1.0-1": "04tKj000000fTEeIAM"
+    "AI Ticket Analyzer@1.1.0-1": "04tKj000000fTEeIAM",
+    "AI Ticket Analyzer@1.2.0-1": "04tKj000000fTEjIAM"
   }
 }

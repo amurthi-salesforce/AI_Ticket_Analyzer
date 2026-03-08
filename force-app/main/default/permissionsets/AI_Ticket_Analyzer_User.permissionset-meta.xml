@@ -10,11 +10,11 @@
         <enabled>true</enabled>
     </classAccesses>
 
-    <!-- Custom Permissions for Field Service Mobile -->
-    <customPermissions>
+    <!-- User Permissions -->
+    <userPermissions>
         <enabled>true</enabled>
-        <name>LightningSdkForFieldServiceMobile</name>
-    </customPermissions>
+        <name>FieldServiceAccess</name>
+    </userPermissions>
 
     <!-- Object Permissions -->
     <objectPermissions>
