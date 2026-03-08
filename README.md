@@ -83,15 +83,13 @@ sf package install --package 04tKj000000fTEoIAM --target-org YourOrgAlias --wait
 - ✅ **Smart Validation** - File type and size checking (JPG, PNG, PDF up to 10MB)
 - ✅ **AI-Powered OCR** - Handles messy handwriting with confidence scoring
 - ✅ **Structured JSON Output** - Ready for automation and record creation
-- ✅ **Error Recovery** - Transaction rollback prevents orphaned files
-- ✅ **WCAG 2.1 Compliant** - Fully accessible with keyboard navigation
 
 ---
 
 ## 💼 Use Cases
 
 ### Fuel Delivery Industry (Primary)
-- Extract delivery ticket data: customer info, gallons delivered, tank levels, totalizer readings
+- Extract delivery ticket data: customer info, gallons delivered, tank levels
 - Process service inspections: leak checks, certifications, connected appliances
 - Monitor driver notes and safety concerns
 - Track tank specifications and inspection history
@@ -215,14 +213,11 @@ After adding the Quick Action to the page layout, mobile users may need to **log
 **What this permission set includes:**
 - ✅ **Lightning SDK for Field Service Mobile** (enables LWC in FSL Mobile App)
 - ✅ **Custom Applications for Field Service Mobile** (required for custom app extensions)
-- ✅ **FileUploadAIProcessor** Apex class access
 - ✅ **WorkOrder** read access
 - ✅ **ContentVersion/ContentDocument** create and read access
 - ✅ **ContentDocumentLink** create and read access
 
 **⚠️ IMPORTANT:** After assigning the permission set, users MUST log out and log back in to the FSL Mobile App for the changes to take effect. Simply pulling down to refresh will not work.
-
-**Note:** Without these permissions, the component will redirect to the browser instead of opening within the FSL Mobile App.
 
 ### Step 5: Test the Installation
 
@@ -268,8 +263,8 @@ The AI automatically extracts:
 | **Package ID** | 0HoKj000000XuZsKAK |
 | **Version** | 1.1.0-1 (Released) |
 | **AI Model** | OpenAI GPT-4 Omni (vision-capable) |
-| **Supported Files** | JPG, PNG, GIF, WEBP, PDF |
-| **Max File Size** | 10MB (configurable) |
+| **Supported Files** | JPG, PNG, PDF |
+| **Max File Size** | 15 MB |
 | **Code Coverage** | Packaging-validated |
 | **Security** | `with sharing` on Apex, Einstein Trust Layer for AI |
 
@@ -316,7 +311,7 @@ The AI automatically extracts:
 **Cause:** File size, type, or permissions
 
 **Solution:**
-1. Verify file is under 10MB
+1. Verify file is under 15MB
 2. Check file type is JPG, PNG, or PDF
 3. Confirm user has ContentVersion create permission
 4. Review Apex debug logs for details
@@ -347,8 +342,6 @@ Two critical permissions are required for LWC components to function properly wi
 5. If not assigned: Click **Add Assignments** → Select the user → Click **Assign**
 6. **CRITICAL:** Have the user **log out and log back in** to the FSL Mobile App (pulling down to refresh is NOT sufficient)
 
-**What this fixes:** Without these permissions, clicking the Quick Action will open the component in the device's browser instead of staying within the FSL Mobile App. With both permissions assigned and after logging back in, the LWC will open directly in the FSL Mobile App.
-
 ---
 
 ## 🛠️ Manual Deployment (Alternative to Package)
@@ -368,72 +361,9 @@ sf project deploy start --source-dir force-app --target-org YourOrgAlias --test-
 
 ### Configure Quick Action on Page Layout (Manual Setup Required)
 
-**IMPORTANT:** After deploying the source code, you MUST add the Quick Action to the Work Order page layout through the Salesforce UI (see Step 3 in the Installation section above).
+**IMPORTANT:** After deploying the source code, you MUST add the Quick Action to the Work Order page layout through the Salesforce UI (see Step 3 in the Installation section above). Also ACTIVATE the deployed prompt template.
 
 Follow the page layout configuration steps to add the "Analyze Ticket with AI" Quick Action to the Work Order layout used by field technicians.
-
----
-
-## 📊 Package Development
-
-### Creating New Package Versions
-
-```bash
-# Authenticate to Dev Hub
-sf org login web --set-default-dev-hub --alias my-dev-hub
-
-# Create new package version
-sf package version create --package "AI Ticket Analyzer" --installation-key-bypass --code-coverage --wait 20 --target-dev-hub my-dev-hub
-
-# Promote to production (after testing)
-sf package version promote --package 04tXXXXXXXXXXXXXX --target-dev-hub my-dev-hub
-```
-
-### Direct Source Deployment
-
-For development/testing without packaging:
-
-```bash
-# Replace YourOrgAlias with your actual org alias
-sf project deploy start --source-dir force-app --target-org YourOrgAlias --test-level RunLocalTests
-```
-
----
-
-## 📈 Version History
-
-### Version 1.2.1-1 (Current - Released)
-- ✅ Added **Custom Applications for Field Service Mobile** permission (CustomMobileAppsAccess)
-- ✅ Fixed launch value from "c__aiTicketAnalyzer" to "aiTicketAnalyzer"
-- ✅ Updated documentation: users must log out/log in (not just refresh)
-- ✅ Enhanced permission set with both required FSL Mobile permissions
-- ✅ Clarified troubleshooting for FSL Mobile redirect issue
-
-### Version 1.2.0-1 (Released)
-- ✅ **Lightning SDK for Field Service Mobile** permission set included
-- ✅ Fixes FSL Mobile App redirecting to browser issue
-- ✅ AI Ticket Analyzer User permission set with FieldServiceAccess
-- ✅ Automatic deployment of required permissions
-- ✅ Updated documentation with permission assignment steps
-- ✅ Enhanced troubleshooting section for FSL Mobile redirect issues
-
-### Version 1.1.0-1 (Released)
-- ✅ Manual UI configuration for FSL Mobile App Extension
-- ✅ Removed invalid Apex classes attempting DML on metadata objects
-- ✅ Clear documentation that AppExtension is metadata-only
-- ✅ Updated installation instructions with manual setup requirements
-
-### Version 1.0.0-2 (Released)
-- ✅ Production-ready unlocked package
-- ✅ Mobile-optimized LWC for file upload
-- ✅ Agentforce AI integration for handwriting recognition
-- ✅ Quick Action for Work Order object
-- ✅ Packaging-validated test coverage
-- ✅ Comprehensive documentation
-
-### Version 1.0.0-1 (Beta)
-- Initial beta release (sandbox-only)
-- Core functionality implemented
 
 ---
 
